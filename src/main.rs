@@ -1,3 +1,5 @@
+mod year_2016;
+
 fn main() {
-    println!("Hello, world!");
+    year_2016::print_all_answers();
 }
