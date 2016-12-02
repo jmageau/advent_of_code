@@ -26,7 +26,7 @@ fn answer_two() -> String {
 }
 
 fn input() -> String {
-    let mut file = File::open("src/year_2015/input/input_day_one").unwrap();
+    let mut file = File::open("src/year_2015/input/input_day_1").unwrap();
     let mut string = String::new();
     let _ = file.read_to_string(&mut string);
     string
