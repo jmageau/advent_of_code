@@ -5,3 +5,4 @@ authors = ["Julien Mageau <jmage019@uottawa.ca>"]
 
 [dependencies]
 rust-crypto = "*"
+regex = "*"
