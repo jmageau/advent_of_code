@@ -8,12 +8,12 @@ mod day_7;
 
 pub fn print_all_answers() {
     println!("2015");
-    //    println!("1. {}", day_1::answers());
-    //    println!("2. {}", day_2::answers());
-    //    println!("3. {}", day_3::answers());
-    //    println!("4. {}", day_4::answers());
-    //    println!("5. {}", day_5::answers());
-    //    println!("6. {}", day_6::answers());
+    println!("1. {}", day_1::answers());
+    println!("2. {}", day_2::answers());
+    println!("3. {}", day_3::answers());
+    println!("4. {}", day_4::answers());
+    println!("5. {}", day_5::answers());
+    println!("6. {}", day_6::answers());
     // println!("7. {}", day_7::answers());
     println!("");
 }

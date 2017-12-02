@@ -22,8 +22,8 @@ fn decrypt_message(use_max: bool) -> String {
     for line in lines {
         let chars = line.chars();
         for (i, char) in chars.enumerate() {
-            let mut position_letter = position_letters.entry(i).or_insert(HashMap::new());
-            let mut char_count = (*position_letter).entry(char).or_insert(0);
+            let position_letter = position_letters.entry(i).or_insert(HashMap::new());
+            let char_count = (*position_letter).entry(char).or_insert(0);
             *char_count += 1;
         }
     }
