@@ -34,9 +34,9 @@ fn real_rooms() -> Vec<(String, u32)> {
 
     for line in lines {
         let captures = re.captures(line).unwrap();
-        let name: String = captures.at(1).unwrap().chars().filter(|&c| c != '-').collect();
-        let id = captures.at(2).unwrap().parse::<u32>().unwrap();
-        let checksum = captures.at(3).unwrap();
+        let name: String = captures.get(1).unwrap().as_str().chars().filter(|&c| c != '-').collect();
+        let id = captures.get(2).unwrap().as_str().parse::<u32>().unwrap();
+        let checksum = captures.get(3).unwrap();
 
         let mut char_counts = name.chars()
             .map(|c1| (c1, name.chars()
@@ -47,7 +47,7 @@ fn real_rooms() -> Vec<(String, u32)> {
 
         let correct_checksum: String = char_counts.iter().map(|c| c.0).take(5).collect();
 
-        if checksum == correct_checksum {
+        if checksum.as_str() == correct_checksum {
             rooms.push((name, id));
         }
     }

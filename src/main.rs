@@ -1,3 +1,5 @@
+extern crate regex;
+
 mod year_2015;
 mod year_2016;
 mod year_2017;

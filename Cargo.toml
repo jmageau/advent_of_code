@@ -4,5 +4,5 @@ version = "0.1.0"
 
 [dependencies]
 rust-crypto = "*"
-regex = "*"
+regex = "0.2.3"
 itertools = "0.7.4"
