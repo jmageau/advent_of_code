@@ -3,6 +3,6 @@ name = "advent_of_code"
 version = "0.1.0"
 
 [dependencies]
-rust-crypto = "*"
+rust-crypto = "0.2.36"
 regex = "0.2.3"
 itertools = "0.7.4"

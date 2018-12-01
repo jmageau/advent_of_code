@@ -4,6 +4,7 @@ mod day_3;
 mod day_4;
 mod day_5;
 mod day_6;
+mod day_7;
 
 pub fn print_all_answers() {
     println!("2017");
@@ -13,5 +14,6 @@ pub fn print_all_answers() {
     println!("4. {}", day_4::answers());
     println!("5. {}", day_5::answers());
     println!("6. {}", day_6::answers());
+    println!("7. {}", day_7::answers());
     println!("");
 }
