@@ -99,7 +99,6 @@ impl Tower {
                 .map(|c| c[0])
         {
             imbalanced_node = imbalanced_child;
-            println!("{}", imbalanced_node.name);
         }
         let imbalanced_node_total_weight = self.total_weight(imbalanced_node);
         let sibling_total_weight = self.total_weight(self.siblings(imbalanced_node)[0]);
