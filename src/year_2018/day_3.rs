@@ -73,7 +73,3 @@ fn input() -> String {
     let _ = file.read_to_string(&mut string);
     string.trim().to_owned()
 }
-
-struct Claim {
-    id: usize,
-}
