@@ -8,6 +8,7 @@ mod day_15;
 mod day_16;
 mod day_17;
 mod day_18;
+mod day_19;
 mod day_2;
 mod day_3;
 mod day_4;
@@ -37,5 +38,6 @@ pub fn print_all_answers() {
     println!("16. {}", day_16::answers());
     println!("17. {}", day_17::answers());
     println!("18. {}", day_18::answers());
+    println!("19. {}", day_19::answers());
     println!("");
 }
