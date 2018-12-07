@@ -1,6 +1,6 @@
-use std::io::prelude::*;
-use std::fs::File;
 use std::collections::HashMap;
+use std::fs::File;
+use std::io::prelude::*;
 
 pub fn answers() -> String {
     format!("{}, {}", answer_one(), answer_two())
@@ -51,7 +51,10 @@ fn answer_two() -> String {
         for char in chars {
             let offset = directions[&char];
             position += offset;
-            if position < 0 || position > grid.len() as i8 || grid.chars().nth(position as usize).unwrap() == ' ' {
+            if position < 0
+                || position > grid.len() as i8
+                || grid.chars().nth(position as usize).unwrap() == ' '
+            {
                 position -= offset;
             }
         }

@@ -22,7 +22,8 @@ fn answer_two() -> String {
                     .filter(|c2| !c.eq_ignore_ascii_case(c2))
                     .collect::<String>(),
             )
-        }).min()
+        })
+        .min()
         .unwrap()
         .to_string()
 }

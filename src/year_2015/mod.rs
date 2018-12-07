@@ -15,5 +15,5 @@ pub fn print_all_answers() {
     println!("5. {}", day_5::answers());
     println!("6. {}", day_6::answers());
     // println!("7. {}", day_7::answers());
-    println!("");
+    println!();
 }

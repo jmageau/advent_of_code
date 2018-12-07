@@ -9,7 +9,7 @@ pub fn answers() -> String {
 fn answer_one() -> String {
     let input = input();
     let layers = get_layers(&input);
-    severity(layers_hit(&layers, 0)).to_string()
+    severity(&layers_hit(&layers, 0)).to_string()
 }
 
 fn answer_two() -> String {
@@ -28,7 +28,8 @@ fn get_layers(input: &str) -> HashMap<usize, usize> {
         .map(|l| {
             let parts: Vec<_> = l.split(": ").map(|n| n.parse::<usize>().unwrap()).collect();
             (parts[0], parts[1])
-        }).collect()
+        })
+        .collect()
 }
 
 fn layers_hit(layers: &HashMap<usize, usize>, delay: usize) -> Vec<(&usize, &usize)> {
@@ -46,7 +47,7 @@ fn layer_hit(depth: usize, range: usize, delay: usize) -> bool {
     (depth + delay) % ((range - 1) * 2) == 0
 }
 
-fn severity(hit_layers: Vec<(&usize, &usize)>) -> usize {
+fn severity(hit_layers: &[(&usize, &usize)]) -> usize {
     hit_layers
         .iter()
         .map(|(&depth, &range)| depth * range)

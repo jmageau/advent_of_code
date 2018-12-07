@@ -19,9 +19,7 @@ fn answer_one() -> String {
         .max_by_key(|(_, minutes_count)| minutes_count.values().sum::<usize>())
         .unwrap()
         .0;
-    let best_minute = *guard_minutes_counts
-        .get(best_guard)
-        .unwrap()
+    let best_minute = *guard_minutes_counts[best_guard]
         .iter()
         .max_by_key(|&(_, count)| count)
         .unwrap()
@@ -39,9 +37,7 @@ fn answer_two() -> String {
         .max_by_key(|(_, minutes_count)| minutes_count.values().max().unwrap())
         .unwrap()
         .0;
-    let best_minute = *guard_minutes_counts
-        .get(best_guard)
-        .unwrap()
+    let best_minute = *guard_minutes_counts[best_guard]
         .iter()
         .max_by_key(|&(_, count)| count)
         .unwrap()
@@ -64,9 +60,9 @@ fn get_guard_minutes_counts(input: &str) -> HashMap<usize, HashMap<u32, usize>> 
 
         let event = if let Some(id) = captures.get(2) {
             Event::BeginShift(id.as_str().parse::<usize>().unwrap())
-        } else if let Some(_) = captures.get(3) {
+        } else if captures.get(3).is_some() {
             Event::FallAsleep
-        } else if let Some(_) = captures.get(4) {
+        } else if captures.get(4).is_some() {
             Event::WakeUp
         } else {
             unreachable!()
@@ -87,7 +83,7 @@ fn get_guard_minutes_counts(input: &str) -> HashMap<usize, HashMap<u32, usize>> 
                 let wake_up_minute = date_time.minute();
                 let minute_counts = guard_minutes_counts
                     .entry(current_guard)
-                    .or_insert(HashMap::new());
+                    .or_insert_with(HashMap::new);
                 for minute in fall_asleep_minute..wake_up_minute {
                     let count = minute_counts.entry(minute).or_insert(0usize);
                     *count += 1;

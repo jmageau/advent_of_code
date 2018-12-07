@@ -1,9 +1,9 @@
 extern crate crypto;
 
-use std::io::prelude::*;
-use std::fs::File;
 use self::crypto::digest::Digest;
 use self::crypto::md5::Md5;
+use std::fs::File;
+use std::io::prelude::*;
 
 pub fn answers() -> String {
     format!("{}, {}", answer_one(), answer_two())

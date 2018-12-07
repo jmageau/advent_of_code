@@ -37,7 +37,7 @@ fn answer_two() -> String {
 }
 
 fn add_to_group(
-    squares: &Vec<Vec<bool>>,
+    squares: &[Vec<bool>],
     position: (usize, usize),
     group_id: usize,
     mut groups: &mut HashMap<(usize, usize), usize>,
@@ -93,8 +93,10 @@ fn get_squares(input: &str) -> Vec<Vec<bool>> {
                         .chars()
                         .map(|c| c == '1')
                         .collect::<Vec<_>>()
-                }).collect()
-        }).collect()
+                })
+                .collect()
+        })
+        .collect()
 }
 
 fn knot_hash(input: &str) -> String {
@@ -125,10 +127,7 @@ fn reverse_elements(list: &mut Vec<u8>, starting_index: u8, length: u8) {
     for i in 0..length / 2 {
         let first_index = starting_index.wrapping_add(i);
         let second_index = starting_index.wrapping_add(length - 1).wrapping_sub(i);
-
-        let temp = list[first_index as usize];
-        list[first_index as usize] = list[second_index as usize];
-        list[second_index as usize] = temp;
+        list.swap(first_index as usize, second_index as usize);
     }
 }
 

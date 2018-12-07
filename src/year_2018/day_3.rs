@@ -58,7 +58,7 @@ fn get_squares(input: &str) -> HashMap<(usize, usize), Vec<usize>> {
 
         for i in x..x + width {
             for j in y..y + height {
-                let ids = squares.entry((i, j)).or_insert(vec![]);
+                let ids = squares.entry((i, j)).or_insert_with(Vec::new);
                 ids.push(id);
             }
         }

@@ -39,5 +39,5 @@ pub fn print_all_answers() {
     println!("17. {}", day_17::answers());
     println!("18. {}", day_18::answers());
     println!("19. {}", day_19::answers());
-    println!("");
+    println!();
 }

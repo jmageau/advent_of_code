@@ -1,8 +1,8 @@
 extern crate regex;
 
-use std::io::prelude::*;
-use std::fs::File;
 use self::regex::Regex;
+use std::fs::File;
+use std::io::prelude::*;
 
 pub fn answers() -> String {
     format!("{}, {}", answer_one(), answer_two())
@@ -17,7 +17,7 @@ fn answer_two() -> String {
     let real_rooms = real_rooms();
 
     for room in real_rooms {
-        let decrypted_name = decrypt_name(room.0, room.1);
+        let decrypted_name = decrypt_name(&room.0, room.1);
         if decrypted_name == "northpoleobjectstorage" {
             return room.1.to_string();
         }
@@ -34,13 +34,19 @@ fn real_rooms() -> Vec<(String, u32)> {
 
     for line in lines {
         let captures = re.captures(line).unwrap();
-        let name: String = captures.get(1).unwrap().as_str().chars().filter(|&c| c != '-').collect();
+        let name: String = captures
+            .get(1)
+            .unwrap()
+            .as_str()
+            .chars()
+            .filter(|&c| c != '-')
+            .collect();
         let id = captures.get(2).unwrap().as_str().parse::<u32>().unwrap();
         let checksum = captures.get(3).unwrap();
 
-        let mut char_counts = name.chars()
-            .map(|c1| (c1, name.chars()
-                .filter(|&c2| c2 == c1).count()))
+        let mut char_counts = name
+            .chars()
+            .map(|c1| (c1, name.chars().filter(|&c2| c2 == c1).count()))
             .collect::<Vec<_>>();
         char_counts.sort_by(|a, b| b.1.cmp(&a.1).then(a.0.cmp(&b.0)));
         char_counts.dedup();
@@ -54,7 +60,7 @@ fn real_rooms() -> Vec<(String, u32)> {
     rooms
 }
 
-fn decrypt_name(encrypted_name: String, id: u32) -> String {
+fn decrypt_name(encrypted_name: &str, id: u32) -> String {
     let chars = encrypted_name.chars();
     let mut decrypted_chars = vec![];
 
@@ -66,7 +72,6 @@ fn decrypt_name(encrypted_name: String, id: u32) -> String {
     }
     decrypted_chars.into_iter().collect()
 }
-
 
 fn input() -> String {
     let mut file = File::open("src/year_2016/input/input_day_4").unwrap();

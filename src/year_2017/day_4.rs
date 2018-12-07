@@ -1,8 +1,8 @@
 extern crate itertools;
 
-use std::io::prelude::*;
-use std::fs::File;
 use self::itertools::Itertools;
+use std::fs::File;
+use std::io::prelude::*;
 
 pub fn answers() -> String {
     format!("{}, {}", answer_one(), answer_two())
@@ -21,12 +21,12 @@ fn answer_two() -> String {
 }
 
 fn is_valid(passphrase: &str) -> bool {
-    let words: Vec<_> = passphrase.split(" ").collect();
+    let words: Vec<_> = passphrase.split(' ').collect();
     words.len() == words.iter().unique().count()
 }
 
 fn is_valid2(passphrase: &str) -> bool {
-    let words: Vec<_> = passphrase.split(" ").collect();
+    let words: Vec<_> = passphrase.split(' ').collect();
     words.len()
         == words
             .iter()

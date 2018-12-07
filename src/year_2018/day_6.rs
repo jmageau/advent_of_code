@@ -1,6 +1,6 @@
+use std::collections::HashMap;
 use std::fs::File;
 use std::io::prelude::*;
-use std::collections::HashMap;
 
 pub fn answers() -> String {
     format!("{}, {}", answer_one(), answer_two())
@@ -21,12 +21,13 @@ fn answer_two() -> String {
 }
 
 fn get_coordinates(input: &str) -> Vec<(usize, usize)> {
-input
+    input
         .lines()
         .map(|l| {
             let mut parts = l.split(", ").map(|p| p.parse::<usize>().unwrap());
             (parts.next().unwrap(), parts.next().unwrap())
-        }).collect()
+        })
+        .collect()
 }
 
 fn get_grid(input: &str) -> Vec<Vec<Cell>> {
@@ -37,19 +38,20 @@ fn get_grid(input: &str) -> Vec<Vec<Cell>> {
     });
 
     let mut grid = vec![vec![Cell::Empty(None); dimensions.0]; dimensions.1];
-    
+
     for (i, &(x, y)) in coordinates.iter().enumerate() {
         grid[y][x] = Cell::Coordinate(i);
     }
 
-    for row in 0..dimensions.1 {
-        for col in 0..dimensions.0 {
-            if let Cell::Empty(_) = grid[row][col] {
-                let c = closest_coordinate((col, row), &coordinates);
-                grid[row][col] = Cell::Empty(c);
-            }            
-        }
-    }
+    grid.iter_mut().enumerate().for_each(|(r, row)| {
+        row.iter_mut().enumerate().for_each(|(c, cell)| {
+            if let Cell::Empty(_) = cell {
+                let closest = closest_coordinate((c, r), &coordinates);
+                *cell = Cell::Empty(closest);
+            }
+        })
+    });
+
     grid
 }
 
@@ -59,7 +61,7 @@ enum Cell {
     Empty(Option<usize>),
 }
 
-fn closest_coordinate(p: (usize, usize), coordinates: &Vec<(usize, usize)>) -> Option<usize> {
+fn closest_coordinate(p: (usize, usize), coordinates: &[(usize, usize)]) -> Option<usize> {
     let mut closest_coordinate = None;
     let mut min_distance = std::usize::MAX;
     let mut multiple = false;
@@ -74,17 +76,25 @@ fn closest_coordinate(p: (usize, usize), coordinates: &Vec<(usize, usize)>) -> O
             multiple = true;
         }
     }
-    
+
     closest_coordinate.filter(|_| !multiple)
 }
 
 fn distance(p1: (usize, usize), p2: (usize, usize)) -> usize {
-    let x = if p1.0 > p2.0 {p1.0 - p2.0} else {p2.0 - p1.0};
-    let y = if p1.1 > p2.1 {p1.1 - p2.1} else {p2.1 - p1.1};
+    let x = if p1.0 > p2.0 {
+        p1.0 - p2.0
+    } else {
+        p2.0 - p1.0
+    };
+    let y = if p1.1 > p2.1 {
+        p1.1 - p2.1
+    } else {
+        p2.1 - p1.1
+    };
     x + y
 }
 
-fn size_of_largest_area(grid: &Vec<Vec<Cell>>) -> usize {
+fn size_of_largest_area(grid: &[Vec<Cell>]) -> usize {
     let mut areas = HashMap::new();
 
     for (r, row) in grid.iter().enumerate() {
@@ -94,7 +104,6 @@ fn size_of_largest_area(grid: &Vec<Vec<Cell>>) -> usize {
                 Cell::Empty(Some(c)) => Some(c),
                 Cell::Empty(None) => None,
             } {
-
                 let area = areas.entry(coordinate).or_insert(Some(0));
                 if r == 0 || r == grid.len() - 1 || c == 0 || c == grid[0].len() - 1 {
                     *area = None;
@@ -108,8 +117,8 @@ fn size_of_largest_area(grid: &Vec<Vec<Cell>>) -> usize {
     areas.values().filter_map(|&a| a).max().unwrap()
 }
 
-fn size_of_good_area(coordinates: &Vec<(usize, usize)>, max_distance: usize) -> usize {
-        let dimensions = coordinates.iter().fold((0, 0), |(acc_x, acc_y), &(x, y)| {
+fn size_of_good_area(coordinates: &[(usize, usize)], max_distance: usize) -> usize {
+    let dimensions = coordinates.iter().fold((0, 0), |(acc_x, acc_y), &(x, y)| {
         (acc_x.max(x + 1), acc_y.max(y + 1))
     });
 
@@ -119,7 +128,7 @@ fn size_of_good_area(coordinates: &Vec<(usize, usize)>, max_distance: usize) -> 
         .count()
 }
 
-fn total_distance(p: (usize, usize), coordinates: &Vec<(usize, usize)>) -> usize {
+fn total_distance(p: (usize, usize), coordinates: &[(usize, usize)]) -> usize {
     coordinates.iter().map(|&c| distance(p, c)).sum()
 }
 

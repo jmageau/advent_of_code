@@ -1,6 +1,6 @@
-use std::io::prelude::*;
-use std::fs::File;
 use std::collections::HashMap;
+use std::fs::File;
+use std::io::prelude::*;
 
 pub fn answers() -> String {
     format!("{}, {}", answer_one(), answer_two())
@@ -22,7 +22,7 @@ fn decrypt_message(use_max: bool) -> String {
     for line in lines {
         let chars = line.chars();
         for (i, char) in chars.enumerate() {
-            let position_letter = position_letters.entry(i).or_insert(HashMap::new());
+            let position_letter = position_letters.entry(i).or_insert_with(HashMap::new);
             let char_count = (*position_letter).entry(char).or_insert(0);
             *char_count += 1;
         }
@@ -31,14 +31,14 @@ fn decrypt_message(use_max: bool) -> String {
     position_letters_vec.sort_by_key(|&(&i, _)| i);
 
     if use_max {
-        position_letters_vec.iter()
-            .map(|&(_, ref char_counts)| *char_counts.iter()
-                .max_by_key(|&(_, c)| c).unwrap().0)
+        position_letters_vec
+            .iter()
+            .map(|&(_, ref char_counts)| *char_counts.iter().max_by_key(|&(_, c)| c).unwrap().0)
             .collect()
     } else {
-        position_letters_vec.iter()
-            .map(|&(_, ref char_counts)| *char_counts.iter()
-                .min_by_key(|&(_, c)| c).unwrap().0)
+        position_letters_vec
+            .iter()
+            .map(|&(_, ref char_counts)| *char_counts.iter().min_by_key(|&(_, c)| c).unwrap().0)
             .collect()
     }
 }

@@ -1,5 +1,5 @@
-use std::io::prelude::*;
 use std::fs::File;
+use std::io::prelude::*;
 
 pub fn answers() -> String {
     format!("{}, {}", answer_one(), answer_two())
@@ -45,7 +45,7 @@ fn distance(stop_at_visited: bool) -> String {
         }
     }
 
-        (position.0.abs() + position.1.abs()).to_string()
+    (position.0.abs() + position.1.abs()).to_string()
 }
 
 fn input() -> String {

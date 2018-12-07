@@ -1,6 +1,6 @@
-use std::io::prelude::*;
-use std::fs::File;
 use regex::Regex;
+use std::fs::File;
+use std::io::prelude::*;
 
 pub fn answers() -> String {
     format!("{}, {}", answer_one(), answer_two())
@@ -24,7 +24,7 @@ fn answer_two() -> String {
     format_screen(&screen)
 }
 
-fn apply_operation(screen: &mut Vec<Vec<bool>>, operation: &str) {
+fn apply_operation(screen: &mut [Vec<bool>], operation: &str) {
     let rect_regex = Regex::new(r"rect (\d+)x(\d+)").unwrap();
     let row_regex = Regex::new(r"rotate row y=(\d+) by (\d+)").unwrap();
     let col_regex = Regex::new(r"rotate column x=(\d+) by (\d+)").unwrap();
@@ -33,9 +33,9 @@ fn apply_operation(screen: &mut Vec<Vec<bool>>, operation: &str) {
         let width = captures.get(1).unwrap().as_str().parse::<usize>().unwrap();
         let height = captures.get(2).unwrap().as_str().parse::<usize>().unwrap();
 
-        for i in 0..width {
-            for j in 0..height {
-                screen[i][j] = true;
+        for col in screen.iter_mut().take(width) {
+            for c in col.iter_mut().take(height) {
+                *c = true;
             }
         }
     } else if let Some(captures) = row_regex.captures(operation) {
@@ -57,12 +57,12 @@ fn apply_operation(screen: &mut Vec<Vec<bool>>, operation: &str) {
     }
 }
 
-fn format_screen(screen: &Vec<Vec<bool>>) -> String {
+fn format_screen(screen: &[Vec<bool>]) -> String {
     let mut result = String::new();
     for j in 0..screen[0].len() {
         result.push('\n');
-        for i in 0..screen.len() {
-            let c = if screen[i][j] { '#' } else { ' ' };
+        for col in screen {
+            let c = if col[j] { '#' } else { ' ' };
             result.push(c);
         }
     }

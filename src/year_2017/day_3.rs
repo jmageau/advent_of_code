@@ -1,13 +1,13 @@
-use std::ops::{Add, AddAssign};
 use std::collections::HashMap;
+use std::ops::{Add, AddAssign};
 
 pub fn answers() -> String {
     format!("{}, {}", answer_one(), answer_two())
 }
 
 fn answer_one() -> String {
-    let input = 312051;
-    let odd_square = (input as f64).sqrt() as i32 - 1;
+    let input = 312_051;
+    let odd_square = (f64::from(input)).sqrt() as i32 - 1;
     let max_coordinate = odd_square / 2 + 1;
 
     let mut position = Pos::new(odd_square / 2, odd_square / 2);
@@ -34,7 +34,7 @@ fn answer_one() -> String {
 }
 
 fn answer_two() -> String {
-    let input = 312051;
+    let input = 312_051;
 
     let mut grid = HashMap::new();
     let mut position = Pos::new(0, 0);
@@ -84,7 +84,6 @@ fn answer_two() -> String {
     }
 }
 
-
 #[derive(Hash, PartialEq, Eq, Copy, Clone, Debug)]
 struct Pos {
     x: i32,
@@ -98,10 +97,10 @@ impl Pos {
     const RIGHT: Self = Pos { x: 1, y: 0 };
 
     fn new(x: i32, y: i32) -> Pos {
-        Pos { x: x, y: y }
+        Pos { x, y }
     }
 
-    fn distance(&self, other: Pos) -> i32 {
+    fn distance(self, other: Pos) -> i32 {
         (self.x - other.x).abs() + (self.y - other.y).abs()
     }
 }

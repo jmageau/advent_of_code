@@ -1,6 +1,6 @@
-use std::io::prelude::*;
-use std::fs::File;
 use std::collections::HashSet;
+use std::fs::File;
+use std::io::prelude::*;
 
 pub fn answers() -> String {
     format!("{}, {}", answer_one(), answer_two())
@@ -8,7 +8,7 @@ pub fn answers() -> String {
 
 fn answer_one() -> String {
     let input = input();
-    let mut banks: Vec<u32> = input.split("\t").map(|n| n.parse().unwrap()).collect();
+    let mut banks: Vec<u32> = input.split('\t').map(|n| n.parse().unwrap()).collect();
     let mut seen_banks = HashSet::new();
     let mut cycles = 0;
 
@@ -16,7 +16,7 @@ fn answer_one() -> String {
         let mut i = banks
             .iter()
             .enumerate()
-            .rev()  // If, multiple maxes, last is returned
+            .rev() // If, multiple maxes, last is returned
             .max_by_key(|&(_, bank)| bank)
             .unwrap()
             .0;
@@ -35,7 +35,7 @@ fn answer_one() -> String {
 
 fn answer_two() -> String {
     let input = input();
-    let mut banks: Vec<u32> = input.split("\t").map(|n| n.parse().unwrap()).collect();
+    let mut banks: Vec<u32> = input.split('\t').map(|n| n.parse().unwrap()).collect();
     let mut seen_banks = HashSet::new();
     let mut seen_banks_ordered = vec![];
 
@@ -44,7 +44,7 @@ fn answer_two() -> String {
         let mut i = banks
             .iter()
             .enumerate()
-            .rev()  // If, multiple maxes, last is returned
+            .rev() // If, multiple maxes, last is returned
             .max_by_key(|&(_, bank)| bank)
             .unwrap()
             .0;

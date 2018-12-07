@@ -1,9 +1,8 @@
 extern crate itertools;
 
-use std::io::prelude::*;
-use std::fs::File;
 use self::itertools::Itertools;
-
+use std::fs::File;
+use std::io::prelude::*;
 
 pub fn answers() -> String {
     format!("{}, {}", answer_one(), answer_two())
@@ -11,30 +10,30 @@ pub fn answers() -> String {
 
 fn answer_one() -> String {
     let input = input();
-    let numbers = input
+    let numbers: Vec<_> = input
         .lines()
         .map(|l| l.split('\t').filter_map(|s| s.parse().ok()).collect())
         .collect();
-    checksum1(numbers).to_string()
+    checksum1(&numbers).to_string()
 }
 
 fn answer_two() -> String {
     let input = input();
-    let numbers = input
+    let numbers: Vec<_> = input
         .lines()
         .map(|l| l.split('\t').filter_map(|s| s.parse().ok()).collect())
         .collect();
-    checksum2(numbers).to_string()
+    checksum2(&numbers).to_string()
 }
 
-fn checksum1(numbers: Vec<Vec<u32>>) -> u32 {
+fn checksum1(numbers: &[Vec<u32>]) -> u32 {
     numbers
         .iter()
         .map(|r| r.iter().max().unwrap() - r.iter().min().unwrap())
         .sum()
 }
 
-fn checksum2(numbers: Vec<Vec<u32>>) -> u32 {
+fn checksum2(numbers: &[Vec<u32>]) -> u32 {
     numbers
         .iter()
         .map(|r| {

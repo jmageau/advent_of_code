@@ -45,7 +45,7 @@ impl Tower {
 
         for (parent_name, child_string) in children_strings {
             for child_name in child_string.split(", ") {
-                let child_node_name = nodes.get(child_name).unwrap().name.to_owned();
+                let child_node_name = nodes[child_name].name.to_owned();
                 nodes
                     .get_mut(parent_name)
                     .unwrap()
@@ -81,7 +81,8 @@ impl Tower {
                     .into_iter()
                     .filter(|&c| c != node)
                     .collect()
-            }).unwrap_or(vec![])
+            })
+            .unwrap_or_else(Vec::new)
     }
 
     fn root(&self) -> &Node {
@@ -106,11 +107,12 @@ impl Tower {
     }
 
     fn total_weight(&self, node: &Node) -> u32 {
-        node.weight + self
-            .children(node)
-            .iter()
-            .map(|c| self.total_weight(c))
-            .sum::<u32>()
+        node.weight
+            + self
+                .children(node)
+                .iter()
+                .map(|c| self.total_weight(c))
+                .sum::<u32>()
     }
 }
 
@@ -122,13 +124,13 @@ where
 {
     let mut values_items = BTreeMap::new();
     for item in items {
-        let i = values_items.entry(f(&item)).or_insert(vec![]);
+        let i = values_items.entry(f(&item)).or_insert_with(Vec::new);
         i.push(item);
     }
 
     let mut result = HashMap::new();
     for (_, items) in values_items {
-        let r = result.entry(items.len()).or_insert(vec![]);
+        let r = result.entry(items.len()).or_insert_with(Vec::new);
         r.extend(items);
     }
 
@@ -146,7 +148,7 @@ impl Node {
     fn new(name: &str, weight: u32) -> Node {
         Node {
             name: name.to_owned(),
-            weight: weight,
+            weight,
             children: vec![],
         }
     }

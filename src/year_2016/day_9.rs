@@ -1,6 +1,6 @@
-use std::io::prelude::*;
-use std::fs::File;
 use regex::Regex;
+use std::fs::File;
+use std::io::prelude::*;
 
 pub fn answers() -> String {
     format!("{}, {}", answer_one(), answer_two())
@@ -13,7 +13,7 @@ fn answer_one() -> String {
 
 fn answer_two() -> String {
     let input = input();
-    Sequence::new(input, 1).length().to_string()
+    Sequence::new(&input, 1).length().to_string()
 }
 
 fn decompress(input: &str) -> String {
@@ -37,7 +37,7 @@ fn decompress(input: &str) -> String {
                 .iter()
                 .skip(i + length)
                 .take(character_count)
-                .map(|&c| c)
+                .cloned()
                 .collect();
 
             (0..repeat_count).for_each(|_| string_to_repeat.iter().for_each(|&c| output.push(c)));
@@ -56,10 +56,10 @@ struct Sequence {
 }
 
 impl Sequence {
-    fn new(string: String, repeats: usize) -> Sequence {
+    fn new(string: &str, repeats: usize) -> Sequence {
         Sequence {
             chars: string.chars().collect(),
-            repeats: repeats,
+            repeats,
         }
     }
 
@@ -85,7 +85,7 @@ impl Sequence {
                     .take(character_count)
                     .collect();
 
-                result += Sequence::new(s, repeat_count).length();
+                result += Sequence::new(&s, repeat_count).length();
                 i += length + character_count;
             }
         }

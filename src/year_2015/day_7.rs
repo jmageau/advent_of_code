@@ -130,7 +130,6 @@
 
 //     unreachable!()
 
-
 //     //    if let Ok(n) = u16::from_str_radix(gate, 10) {
 //     //        return n;
 //     //    }
@@ -183,7 +182,6 @@
 //         gate: String
 //     }
 // }
-
 
 // fn input() -> String {
 //     let mut file = File::open("src/year_2015/input/input_day_7").unwrap();

@@ -1,6 +1,5 @@
-use std::io::prelude::*;
 use std::fs::File;
-
+use std::io::prelude::*;
 
 pub fn answers() -> String {
     format!("{}, {}", answer_one(), answer_two())
@@ -8,17 +7,17 @@ pub fn answers() -> String {
 
 fn answer_one() -> String {
     let input = input();
-    let digits = input.chars().filter_map(|c| c.to_digit(10)).collect();
-    sum(digits, 1).to_string()
+    let digits: Vec<_> = input.chars().filter_map(|c| c.to_digit(10)).collect();
+    sum(&digits, 1).to_string()
 }
 
 fn answer_two() -> String {
     let input = input();
-    let digits = input.chars().filter_map(|c| c.to_digit(10)).collect();
-    sum(digits, input.len() / 2).to_string()
+    let digits: Vec<_> = input.chars().filter_map(|c| c.to_digit(10)).collect();
+    sum(&digits, input.len() / 2).to_string()
 }
 
-fn sum(digits: Vec<u32>, offset: usize) -> u32 {
+fn sum(digits: &[u32], offset: usize) -> u32 {
     digits
         .iter()
         .enumerate()

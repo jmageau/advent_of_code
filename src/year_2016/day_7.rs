@@ -1,5 +1,5 @@
-use std::io::prelude::*;
 use std::fs::File;
+use std::io::prelude::*;
 
 pub fn answers() -> String {
     format!("{}, {}", answer_one(), answer_two())
@@ -35,7 +35,8 @@ fn supports_tls(address: &str) -> bool {
             in_brackets = true;
         } else if c == ']' {
             in_brackets = false;
-        } else if chars[i] != chars[i + 1] && chars[i] == chars[i + 3]
+        } else if chars[i] != chars[i + 1]
+            && chars[i] == chars[i + 3]
             && chars[i + 1] == chars[i + 2]
         {
             if in_brackets {

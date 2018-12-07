@@ -1,5 +1,5 @@
-use std::io::prelude::*;
 use std::fs::File;
+use std::io::prelude::*;
 
 pub fn answers() -> String {
     format!("{}, {}", answer_one(), answer_two())
@@ -12,8 +12,13 @@ fn answer_one() -> String {
     let mut total_area = 0;
     for line in lines {
         let dimensions: Vec<u32> = line.split('x').map(|d| d.parse::<u32>().unwrap()).collect();
-        let smallest_side_area = dimensions.iter().product::<u32>() / dimensions.iter().max().unwrap();
-        let area = 2 * (dimensions[0] * dimensions[1] + dimensions[1] * dimensions[2] + dimensions[2] * dimensions[0]) + smallest_side_area;
+        let smallest_side_area =
+            dimensions.iter().product::<u32>() / dimensions.iter().max().unwrap();
+        let area = 2
+            * (dimensions[0] * dimensions[1]
+                + dimensions[1] * dimensions[2]
+                + dimensions[2] * dimensions[0])
+            + smallest_side_area;
         total_area += area;
     }
     total_area.to_string()

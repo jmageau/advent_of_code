@@ -48,17 +48,15 @@ fn traverse_grid(input: &str) -> (String, usize) {
                     } else {
                         direction = Direction::Left;
                     }
+                } else if grid
+                    .get(position.0 + 1)
+                    .and_then(|r| r.get(position.1))
+                    .map(|&c| c != ' ')
+                    .unwrap_or(false)
+                {
+                    direction = Direction::Down;
                 } else {
-                    if grid
-                        .get(position.0 + 1)
-                        .and_then(|r| r.get(position.1))
-                        .map(|&c| c != ' ')
-                        .unwrap_or(false)
-                    {
-                        direction = Direction::Down;
-                    } else {
-                        direction = Direction::Up;
-                    }
+                    direction = Direction::Up;
                 }
             }
             &c => letters.push(c),
@@ -75,7 +73,7 @@ fn get_grid(input: &str) -> Vec<Vec<char>> {
         .collect()
 }
 
-fn starting_position(grid: &Vec<Vec<char>>) -> Position {
+fn starting_position(grid: &[Vec<char>]) -> Position {
     Position(0, grid[0].iter().position(|&c| c == '|').unwrap())
 }
 
@@ -85,6 +83,7 @@ impl Add<Direction> for Position {
     type Output = Self;
 
     fn add(self, direction: Direction) -> Self {
+        #![allow(clippy::suspicious_arithmetic_impl)]
         match direction {
             Direction::Up => Position(self.0 - 1, self.1),
             Direction::Down => Position(self.0 + 1, self.1),

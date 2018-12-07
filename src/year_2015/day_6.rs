@@ -1,7 +1,7 @@
-use std::io::prelude::*;
-use std::fs::File;
-use std::collections::HashMap;
 use regex::Regex;
+use std::collections::HashMap;
+use std::fs::File;
+use std::io::prelude::*;
 
 pub fn answers() -> String {
     format!("{}, {}", answer_one(), answer_two())
@@ -18,7 +18,8 @@ fn answer_two() -> String {
 fn get_lights_count(use_brightness: bool) -> u32 {
     let input = input();
     let lines = input.lines();
-    let re = Regex::new(r"^(turn on|turn off|toggle) ([0-9]+),([0-9]+) through ([0-9]+),([0-9]+)$").unwrap();
+    let re = Regex::new(r"^(turn on|turn off|toggle) ([0-9]+),([0-9]+) through ([0-9]+),([0-9]+)$")
+        .unwrap();
 
     let mut lights = HashMap::new();
     for i in 0..1000 {
@@ -35,22 +36,22 @@ fn get_lights_count(use_brightness: bool) -> u32 {
         let end_x = captures.get(4).unwrap().as_str().parse::<u32>().unwrap();
         let end_y = captures.get(5).unwrap().as_str().parse::<u32>().unwrap();
 
-        for x in start_x..end_x + 1 {
-            for y in start_y..end_y + 1 {
+        for x in start_x..=end_x {
+            for y in start_y..=end_y {
                 let light = lights.get_mut(&(x, y)).unwrap();
                 if use_brightness {
                     match instruction.as_str() {
                         "turn on" => *light += 1,
                         "turn off" => *light = if *light == 0 { 0 } else { *light - 1 },
                         "toggle" => *light += 2,
-                        _ => unreachable!()
+                        _ => unreachable!(),
                     }
                 } else {
                     match instruction.as_str() {
                         "turn on" => *light = 1,
                         "turn off" => *light = 0,
                         "toggle" => *light = 1 - *light,
-                        _ => unreachable!()
+                        _ => unreachable!(),
                     }
                 }
             }

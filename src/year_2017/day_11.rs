@@ -18,7 +18,7 @@ fn answer_two() -> String {
 }
 
 fn execute_steps(input: &str) -> (usize, usize) {
-    let path: Vec<_> = input.split(",").collect();
+    let path: Vec<_> = input.split(',').collect();
 
     let mut position = Position(0, 0, 0);
     let mut max_distance = 0;

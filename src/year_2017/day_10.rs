@@ -8,7 +8,7 @@ pub fn answers() -> String {
 fn answer_one() -> String {
     let input = input();
 
-    let lengths: Vec<_> = input.split(",").map(|n| n.parse::<u8>().unwrap()).collect();
+    let lengths: Vec<_> = input.split(',').map(|n| n.parse::<u8>().unwrap()).collect();
     let mut list: Vec<_> = (0..=255).collect();
 
     let mut current_position = 0;
@@ -55,10 +55,7 @@ fn reverse_elements(list: &mut Vec<u8>, starting_index: u8, length: u8) {
     for i in 0..length / 2 {
         let first_index = starting_index.wrapping_add(i);
         let second_index = starting_index.wrapping_add(length - 1).wrapping_sub(i);
-
-        let temp = list[first_index as usize];
-        list[first_index as usize] = list[second_index as usize];
-        list[second_index as usize] = temp;
+        list.swap(first_index as usize, second_index as usize)
     }
 }
 

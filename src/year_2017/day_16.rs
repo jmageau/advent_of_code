@@ -29,7 +29,8 @@ fn answer_two() -> String {
         .find(|_| {
             dance(&moves, &mut programs);
             programs == STARTING_PROGRAMS
-        }).unwrap();
+        })
+        .unwrap();
 
     programs = STARTING_PROGRAMS;
 
@@ -42,7 +43,7 @@ fn answer_two() -> String {
 
 fn get_moves(input: &str) -> Vec<Move> {
     input
-        .split(",")
+        .split(',')
         .map(|m| {
             let mut chars = m.chars();
             let move_type = chars.next().unwrap();
@@ -51,7 +52,7 @@ fn get_moves(input: &str) -> Vec<Move> {
                 's' => Move::Spin(rest.parse::<usize>().unwrap()),
                 'x' => {
                     let positions: Vec<_> = rest
-                        .split("/")
+                        .split('/')
                         .map(|p| p.parse::<usize>().unwrap())
                         .collect();
                     Move::Exchange(positions[0], positions[1])
@@ -65,7 +66,8 @@ fn get_moves(input: &str) -> Vec<Move> {
                 }
                 _ => unreachable!(),
             }
-        }).collect()
+        })
+        .collect()
 }
 
 enum Move {
@@ -74,7 +76,7 @@ enum Move {
     Partner(char, char),
 }
 
-fn dance(moves: &Vec<Move>, programs: &mut [char; 16]) {
+fn dance(moves: &[Move], programs: &mut [char; 16]) {
     for dance_move in moves {
         match dance_move {
             Move::Spin(n) => programs.rotate_right(*n),

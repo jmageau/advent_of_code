@@ -41,8 +41,7 @@ fn answer_one() -> String {
                 *e %= v;
             }
             Instruction::Rcv(v) => {
-                let v = registers.get(v).unwrap();
-                if *v != 0 {
+                if registers[v] != 0 {
                     break;
                 }
             }
@@ -208,7 +207,7 @@ impl FromStr for Instruction {
     type Err = ();
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        let mut parts = s.split(" ");
+        let mut parts = s.split(' ');
         let instruction = parts.next().unwrap();
         let first_value = parts.next().unwrap();
         let second_value = parts.next();
