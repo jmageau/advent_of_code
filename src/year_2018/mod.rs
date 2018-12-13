@@ -1,4 +1,5 @@
 mod day_1;
+mod day_10;
 mod day_2;
 mod day_3;
 mod day_4;
@@ -19,5 +20,6 @@ pub fn print_all_answers() {
     println!("7. {}", day_7::answers());
     println!("8. {}", day_8::answers());
     println!("9. {}", day_9::answers());
+    println!("10. {}", day_10::answers());
     println!();
 }
