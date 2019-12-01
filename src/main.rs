@@ -2,6 +2,7 @@ mod year_2015;
 mod year_2016;
 mod year_2017;
 mod year_2018;
+mod year_2019;
 
 use structopt::StructOpt;
 
@@ -22,6 +23,7 @@ fn main() {
         2016 => year_2016::print_answer(day),
         2017 => year_2017::print_answer(day),
         2018 => year_2018::print_answer(day),
+        2019 => year_2019::print_answer(day),
         _ => println!("Invalid year: {}.", year),
     };
 
@@ -40,5 +42,6 @@ fn main() {
         print_year(2016);
         print_year(2017);
         print_year(2018);
+        print_year(2019);
     }
 }
