@@ -18,26 +18,27 @@ mod day_7;
 mod day_8;
 mod day_9;
 
-pub fn print_all_answers() {
-    println!("2017");
-    println!("1. {}", day_1::answers());
-    println!("2. {}", day_2::answers());
-    println!("3. {}", day_3::answers());
-    println!("4. {}", day_4::answers());
-    println!("5. {}", day_5::answers());
-    println!("6. {}", day_6::answers());
-    println!("7. {}", day_7::answers());
-    println!("8. {}", day_8::answers());
-    println!("9. {}", day_9::answers());
-    println!("10. {}", day_10::answers());
-    println!("11. {}", day_11::answers());
-    println!("12. {}", day_12::answers());
-    println!("13. {}", day_13::answers());
-    println!("14. {}", day_14::answers());
-    println!("15. {}", day_15::answers());
-    println!("16. {}", day_16::answers());
-    println!("17. {}", day_17::answers());
-    println!("18. {}", day_18::answers());
-    println!("19. {}", day_19::answers());
-    println!();
+pub fn print_answer(day: u8) {
+    match day {
+        1 => println!("2017.{}: {}", day, day_1::answers()),
+        2 => println!("2017.{}: {}", day, day_2::answers()),
+        3 => println!("2017.{}: {}", day, day_3::answers()),
+        4 => println!("2017.{}: {}", day, day_4::answers()),
+        5 => println!("2017.{}: {}", day, day_5::answers()),
+        6 => println!("2017.{}: {}", day, day_6::answers()),
+        7 => println!("2017.{}: {}", day, day_7::answers()),
+        8 => println!("2017.{}: {}", day, day_8::answers()),
+        9 => println!("2017.{}: {}", day, day_9::answers()),
+        10 => println!("2017.{}: {}", day, day_10::answers()),
+        11 => println!("2017.{}: {}", day, day_11::answers()),
+        12 => println!("2017.{}: {}", day, day_12::answers()),
+        13 => println!("2017.{}: {}", day, day_13::answers()),
+        14 => println!("2017.{}: {}", day, day_14::answers()),
+        15 => println!("2017.{}: {}", day, day_15::answers()),
+        16 => println!("2017.{}: {}", day, day_16::answers()),
+        17 => println!("2017.{}: {}", day, day_17::answers()),
+        18 => println!("2017.{}: {}", day, day_18::answers()),
+        19 => println!("2017.{}: {}", day, day_19::answers()),
+        _ => println!("2017.{}: No answers.", day),
+    }
 }
