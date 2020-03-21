@@ -1,191 +1,125 @@
-// extern crate regex;
+use std::{collections::HashMap, str::FromStr};
 
-// use std::io::prelude::*;
-// use std::fs::File;
-// use std::collections::HashMap;
-// use self::regex::Regex;
+pub fn answers() -> String {
+    format!("{}, {}", answer_one(), answer_two())
+}
 
-// pub fn answers() -> String {
-//     format!("{}, {}", answer_one(), answer_two())
-// }
+fn answer_one() -> String {
+    get_value(&Value::Wire(Wire("a".to_owned())), &circuit(&input())).to_string()
+}
 
-// fn answer_one() -> String {
-//     let input = input();
-//     let lines = input.lines();
-//     let re = Regex::new(r"^(.+) -> (.+)$").unwrap();
+fn answer_two() -> String {
+    let mut circuit = circuit(&input());
+    *circuit.get_mut(&Wire("b".to_owned())).unwrap() = Expression::Assign(Value::Signal(Signal(
+        get_value(&Value::Wire(Wire("a".to_owned())), &circuit),
+    )));
+    get_value(&Value::Wire(Wire("a".to_owned())), &circuit).to_string()
+}
 
-//     let mut instructions = HashMap::new();
-//     for line in lines {
-//         let captures = re.captures(line).unwrap();
-//         let instruction = parse_instruction(captures.at(1).unwrap().to_string());
-//         let gate = captures.at(2).unwrap().to_string();
-//         instructions.insert(gate, instruction);
-//     }
+fn input() -> String {
+    std::fs::read_to_string("src/year_2015/input/input_day_7").unwrap()
+}
 
-//     evaluate_gate("a", &mut instructions).to_string()
-// }
+#[derive(Debug)]
+struct Signal(u16);
 
-// fn answer_two() -> String {
-//     "222".to_string()
-// }
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+struct Wire(String);
 
-// fn parse_instruction(string: String) -> Instruction {
-//     let re_signal = Regex::new(r"^(\d+)$").unwrap();
-//     let re_wire = Regex::new(r"^(\w+)$").unwrap();
-//     let re_not_value = Regex::new(r"^NOT (\w+)$").unwrap();
-//     let re_and_or_shift = Regex::new(r"^(\w+) (\w+) (\w+)$").unwrap();
+#[derive(Debug)]
+enum Value {
+    Signal(Signal),
+    Wire(Wire),
+}
 
-//     if let Some(captures) = re_signal.captures(&string) {
-//         let signal = captures.at(1).unwrap().to_string().parse::<u16>().unwrap();
-//         Instruction::SetSignal { signal: signal }
-//     } else if let Some(captures) = re_wire.captures(&string) {
-//         let wire = captures.at(1).unwrap().to_string();
-//         Instruction::SetWire { wire: wire }
-//     } else if let Some(captures) = re_not_value.captures(&string) {
-//         let gate = captures.at(1).unwrap().to_string();
-//         Instruction::Not { gate: gate }
-//     } else if let Some(captures) = re_and_or_shift.captures(&string) {
-//         let gate = captures.at(1).unwrap().to_string();
-//         let instruction = captures.at(2).unwrap();
+impl FromStr for Value {
+    type Err = ();
+    fn from_str(s: &str) -> Result<Value, Self::Err> {
+        if let Ok(n) = s.parse::<u16>() {
+            Ok(Value::Signal(Signal(n)))
+        } else {
+            Ok(Value::Wire(Wire(s.to_owned())))
+        }
+    }
+}
 
-//         match instruction {
-//             "AND" => {
-//                 let gate_2 = captures.at(3).unwrap().to_string();
-//                 Instruction::And { gate_1: gate, gate_2: gate_2 }
-//             },
-//             "OR" => {
-//                 let gate_2 = captures.at(3).unwrap().to_string();
-//                 Instruction::Or { gate_1: gate, gate_2: gate_2 }
-//             },
-//             "LSHIFT" => {
-//                 let amount = captures.at(3).unwrap().parse::<u16>().unwrap();
-//                 Instruction::LShift { gate: gate, amount: amount }
-//             },
-//             "RSHIFT" => {
-//                 let amount = captures.at(3).unwrap().parse::<u16>().unwrap();
-//                 Instruction::RShift { gate: gate, amount: amount }
-//             },
-//             _ => unreachable!()
-//         }
-//     } else {
-//         unreachable!()
-//     }
-// }
+#[derive(Debug)]
+enum Expression {
+    Assign(Value),
+    And(Value, Value),
+    Or(Value, Value),
+    LeftShift(Value, Value),
+    RightShift(Value, Value),
+    Not(Value),
+}
 
-// fn evaluate_gate(gate: &str, instructions: &mut HashMap<String, Instruction>) -> u16 {
-//     while true {
-//         for instruction in instructions.values_mut() {
-//             match instruction {
-//                 &mut Instruction::SetSignal { ref signal } => *instruction = *instruction,
-//                 &mut Instruction::SetWire { ref wire } => *instruction = instructions[wire],
-//                 &mut Instruction::And { ref gate_1, ref gate_2 } => {
-//                     if let Instruction::SetSignal { signal: ref signal_1 } = instructions[gate_1] {
-//                         if *signal_1 == u16::min_value() {
-//                             *instruction = Instruction::SetSignal { signal: u16::min_value() }
-//                         } else if let Instruction::SetSignal { signal: ref signal_2 } = instructions[gate_2] {
-//                             *instruction = Instruction::SetSignal { signal: signal_1 & signal_2 }
-//                         }
-//                     } else if let Instruction::SetSignal { signal: ref signal_2 } = instructions[gate_2] {
-//                         if *signal_2 == u16::min_value() {
-//                             *instruction = Instruction::SetSignal { signal: u16::min_value() }
-//                         }
-//                     }
-//                 },
-//                 &mut Instruction::Or { ref gate_1, ref gate_2 } => {
-//                     if let Instruction::SetSignal { signal: ref signal_1 } = instructions[gate_1] {
-//                         if *signal_1 == u16::max_value() {
-//                             *instruction = Instruction::SetSignal { signal: u16::max_value() }
-//                         } else if let Instruction::SetSignal { signal: ref signal_2 } = instructions[gate_2] {
-//                             *instruction = Instruction::SetSignal { signal: signal_1 | signal_2 }
-//                         }
-//                     } else if let Instruction::SetSignal { signal: ref signal_2 } = instructions[gate_2] {
-//                         if *signal_2 == u16::max_value() {
-//                             *instruction = Instruction::SetSignal { signal: u16::max_value() }
-//                         }
-//                     }
-//                 },
-//                 &mut Instruction::LShift { ref gate, ref amount } => {
-//                     if let Instruction::SetSignal { ref signal } = instructions[gate] {
-//                         *instruction = Instruction::SetSignal { signal: signal << amount }
-//                     }
-//                 },
-//                 &mut Instruction::RShift { ref gate, ref amount } => {
-//                     if let Instruction::SetSignal { ref signal } = instructions[gate] {
-//                         *instruction = Instruction::SetSignal { signal: signal >> amount }
-//                     }
-//                 },
-//                 &mut Instruction::Not { ref gate } => {
-//                     if let Instruction::SetSignal { ref signal } = instructions[gate] {
-//                         *instruction = Instruction::SetSignal { signal: !signal }
-//                     }
-//                 }
+fn circuit(input: &str) -> HashMap<Wire, Expression> {
+    input
+        .lines()
+        .map(|l| {
+            let parts: Vec<_> = l.split(" ").collect();
+            let wire = Wire((*parts.last().unwrap()).to_owned());
+            let expression = if parts[1] == "->" {
+                Expression::Assign(parts[0].parse().unwrap())
+            } else if parts[1] == "AND" {
+                Expression::And(parts[0].parse().unwrap(), parts[2].parse().unwrap())
+            } else if parts[1] == "OR" {
+                Expression::Or(parts[0].parse().unwrap(), parts[2].parse().unwrap())
+            } else if parts[1] == "LSHIFT" {
+                Expression::LeftShift(parts[0].parse().unwrap(), parts[2].parse().unwrap())
+            } else if parts[1] == "RSHIFT" {
+                Expression::RightShift(parts[0].parse().unwrap(), parts[2].parse().unwrap())
+            } else if parts[0] == "NOT" {
+                Expression::Not(parts[1].parse().unwrap())
+            } else {
+                unreachable!()
+            };
 
-//             }
+            (wire, expression)
+        })
+        .collect()
+}
 
-//             if let Instruction::SetSignal { signal } = instructions[gate] {
-//                 return signal;
-//             }
-//         }
-//     }
+fn get_value(value: &Value, circuit: &HashMap<Wire, Expression>) -> u16 {
+    get_value_impl(value, circuit, &mut HashMap::new())
+}
 
-//     unreachable!()
+fn get_value_impl(
+    value: &Value,
+    circuit: &HashMap<Wire, Expression>,
+    known_values: &mut HashMap<Wire, u16>,
+) -> u16 {
+    let expression = match value {
+        Value::Signal(s) => return s.0,
+        Value::Wire(w) => {
+            if let Some(v) = known_values.get(w) {
+                return *v;
+            } else {
+                circuit.get(&w).unwrap()
+            }
+        }
+    };
 
-//     //    if let Ok(n) = u16::from_str_radix(gate, 10) {
-//     //        return n;
-//     //    }
-//     //
-//     //    match instructions[gate] {
-//     //        Instruction::Set{ref signal} => evaluate_gate(signal, instructions),
-//     //        Instruction::And{ref gate_1, ref gate_2} => {
-//     //            evaluate_gate(gate_1, instructions) & evaluate_gate(gate_2, instructions)
-//     //        },
-//     //        Instruction::Or{ref gate_1, ref gate_2} => {
-//     //            evaluate_gate(gate_1, instructions) | evaluate_gate(gate_2, instructions)
-//     //        },
-//     //        Instruction::LShift{ref gate, ref amount} => {
-//     //            println!("LSHIFT");
-//     //            evaluate_gate(gate, instructions) << amount
-//     //        },
-//     //        Instruction::RShift{ref gate, ref amount} => {
-//     //            evaluate_gate(gate, instructions) >> amount
-//     //        },
-//     //        Instruction::Not{ref gate} => {
-//     //            !evaluate_gate(gate, instructions)
-//     //        }
-//     //    }
-// }
+    let result = match expression {
+        Expression::Assign(v) => get_value_impl(v, circuit, known_values),
+        Expression::And(v1, v2) => {
+            get_value_impl(v1, circuit, known_values) & get_value_impl(v2, circuit, known_values)
+        }
+        Expression::Or(v1, v2) => {
+            get_value_impl(v1, circuit, known_values) | get_value_impl(v2, circuit, known_values)
+        }
+        Expression::LeftShift(v1, v2) => {
+            get_value_impl(v1, circuit, known_values) << get_value_impl(v2, circuit, known_values)
+        }
+        Expression::RightShift(v1, v2) => {
+            get_value_impl(v1, circuit, known_values) >> get_value_impl(v2, circuit, known_values)
+        }
+        Expression::Not(v) => !get_value_impl(v, circuit, known_values),
+    };
 
-// enum Instruction {
-//     SetSignal {
-//         signal: u16
-//     },
-//     SetWire {
-//         wire: String
-//     },
-//     And {
-//         gate_1: String,
-//         gate_2: String
-//     },
-//     Or {
-//         gate_1: String,
-//         gate_2: String
-//     },
-//     LShift {
-//         gate: String,
-//         amount: u16
-//     },
-//     RShift {
-//         gate: String,
-//         amount: u16
-//     },
-//     Not {
-//         gate: String
-//     }
-// }
+    if let Value::Wire(w) = value {
+        known_values.insert(w.clone(), result);
+    }
 
-// fn input() -> String {
-//     let mut file = File::open("src/year_2015/input/input_day_7").unwrap();
-//     let mut string = String::new();
-//     let _ = file.read_to_string(&mut string);
-//     string
-// }
+    result
+}
