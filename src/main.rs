@@ -27,8 +27,8 @@ fn main() {
         _ => println!("Invalid year: {}.", year),
     };
 
-    let print_year = |year: u32| {
-        (1..=31).for_each(|day| print_day(year, day));
+    let print_year = |year| {
+        (1..=25).for_each(|day| print_day(year, day));
     };
 
     if let Some(year) = opt.year {

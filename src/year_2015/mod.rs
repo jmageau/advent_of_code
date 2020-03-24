@@ -6,6 +6,7 @@ mod day_5;
 mod day_6;
 mod day_7;
 mod day_8;
+mod day_9;
 
 pub fn print_answer(day: u8) {
     match day {
@@ -17,6 +18,7 @@ pub fn print_answer(day: u8) {
         6 => println!("2015.{}: {}", day, day_6::answers()),
         7 => println!("2015.{}: {}", day, day_7::answers()),
         8 => println!("2015.{}: {}", day, day_8::answers()),
+        9 => println!("2015.{}: {}", day, day_9::answers()),
         _ => println!("2015.{}: No answers.", day),
     }
 }
