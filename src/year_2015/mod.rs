@@ -11,6 +11,7 @@ mod day_18;
 mod day_19;
 mod day_2;
 mod day_20;
+mod day_21;
 mod day_3;
 mod day_4;
 mod day_5;
@@ -41,6 +42,7 @@ pub fn print_answer(day: u8) {
         18 => println!("2015.{}: {}", day, day_18::answers()),
         19 => println!("2015.{}: {}", day, day_19::answers()),
         20 => println!("2015.{}: {}", day, day_20::answers()),
+        21 => println!("2015.{}: {}", day, day_21::answers()),
         _ => println!("2015.{}: No answers.", day),
     }
 }
