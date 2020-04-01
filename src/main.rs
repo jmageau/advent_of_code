@@ -1,8 +1,5 @@
-mod year_2015;
-mod year_2016;
-mod year_2017;
-mod year_2018;
-mod year_2019;
+#[macro_use]
+mod utils;
 
 use structopt::StructOpt;
 
@@ -15,16 +12,22 @@ struct Opt {
     day: Option<u8>,
 }
 
+aoc_year!(2015);
+aoc_year!(2016, 1, 2, 3, 4, 5, 6, 7, 8, 9);
+aoc_year!(2017, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19);
+aoc_year!(2018, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11);
+aoc_year!(2019, 1, 2, 3, 4, 5, 6);
+
 fn main() {
     let opt = Opt::from_args();
 
     let print_day = |year, day| match year {
-        2015 => year_2015::print_answer(day),
-        2016 => year_2016::print_answer(day),
-        2017 => year_2017::print_answer(day),
-        2018 => year_2018::print_answer(day),
-        2019 => year_2019::print_answer(day),
-        _ => println!("Invalid year: {}.", year),
+        2015 => year_2015::print_day(day),
+        2016 => year_2016::print_day(day),
+        2017 => year_2017::print_day(day),
+        2018 => year_2018::print_day(day),
+        2019 => year_2019::print_day(day),
+        _ => eprintln!("Invalid year: {}.", year),
     };
 
     let print_year = |year| {
