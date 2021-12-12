@@ -24,12 +24,8 @@ fn rows(first_row: Vec<bool>) -> impl Iterator<Item = Vec<bool>> {
             (0..prev.len())
                 .map(|i| {
                     let left = i > 0 && prev[i - 1];
-                    let center = prev[i];
                     let right = i < prev.len() - 1 && prev[i + 1];
-                    left && center && !right
-                        || !left && center && right
-                        || left && !center && !right
-                        || !left && !center && right
+                    !left && right || left && !right
                 })
                 .collect(),
         )
