@@ -20,6 +20,7 @@ aoc_year!(2019, 1, 2, 3, 4, 5, 6);
 aoc_year!(2020, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13);
 aoc_year!(2021, 1, 2, 3, 4, 5, 6, 7, 8);
 aoc_year!(2022, 1, 2, 3, 4);
+aoc_year!(2023, 1);
 
 fn main() {
     let opt = Opt::from_args();
@@ -33,6 +34,7 @@ fn main() {
         2020 => year_2020::print_day(day),
         2021 => year_2021::print_day(day),
         2022 => year_2022::print_day(day),
+        2023 => year_2023::print_day(day),
         _ => eprintln!("Invalid year: {}.", year),
     };
 
@@ -55,5 +57,6 @@ fn main() {
         print_year(2020);
         print_year(2021);
         print_year(2022);
+        print_year(2023);
     }
 }
